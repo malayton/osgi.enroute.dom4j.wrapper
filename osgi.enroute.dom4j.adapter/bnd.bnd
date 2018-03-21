@@ -1,0 +1,99 @@
+#
+# osgi.enroute.dom4j.adapter PROVIDER BUNDLE
+#
+
+version-dom4j = 1.6.1
+version-relaxng = 1.0.0
+version-gjt = 2.1.10
+
+Bundle-Version: 1.6.1.${tstamp}
+Bundle-Description: Wraps DOM4J for OSGi, including the primary dependencies
+Bundle-Copyright: OSGi enRoute
+Bundle-Vendor: OSGi Alliance
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Bundle-License: \
+	https://opensource.org/licenses/BSD-2-Clause; \
+		description='For DOM4J and relax NG'; \
+		link='', \
+	http://www.extreme.indiana.edu/xgws/xsoap/xpp/download/PullParser2/LICENSE.txt; \
+		description='Pull Parser'; \
+		link='http://www.extreme.indiana.edu/xgws/xsoap/xpp/download/PullParser2/LICENSE.txt', \
+	'Thai Open Software Center'; \
+		description='Exception for relaxng'; \
+		link='tosc-license.txt'
+
+Export-Package: \
+	org.dom4j.*;version=${version-dom4j}, \
+	org.relaxng.datatype;version=${version-relaxng}, \
+	org.gjt.xpp;version=${version-gjt}
+
+Private-Package: \
+	org.gjt.xpp.*
+
+Import-Package: \
+	com.sun.msv.datatype.*; resolution:=optional, \
+	!org.xmlpull.*, \
+	*
+
+Provide-Capability: \
+	osgi.contract; \
+		osgi.contract=DOM4J; \
+		uses:="${exports}"; \
+		version:List<Version>=1.0.0
+
+-plugin: aQute.lib.spring.SpringComponent
+
+-includeresource: \
+	@pull-parser-*.jar!/PullParser*_VERSION, \
+	@pull-parser-*.jar!/META-INF/services/*, \
+	tosc-license.txt, \
+	{readme.md}
+
+
+-conditionalpackage: \
+	!javax.*, \
+	!org.xml.*, \
+	!org.w3c.*, \
+	!org.ietf.jgss, \
+	!org.omg.*, \
+	!com.sun.*, \
+	!org.jaxen.*, \
+	!org.xmlpull.*, \
+	*
+
+-buildpath: \
+	org.jvnet.hudson.dom4j:dom4j;version=1.6.1.hudson-3,\
+	xmlpull:xmlpull;version=1.1.3.4d_b4_min,\
+	pull-parser:pull-parser;version=2.1.10,\
+	jaxen;version=1.1.6,\
+	net.java.dev.msv.xsdlib;version=2013.6.1,\
+	relaxngDatatype:relaxngDatatype;version=20020414.0
+
+-testpath: \
+	osgi.enroute.junit.wrapper;version=4.12
+
+-runbundles: \
+	org.apache.felix.log;version='[1.0.1,1.0.2)',\
+	jaxen;version='[1.1.6,1.1.7)',\
+	osgi.enroute.dom4j.adapter;version=snapshot,\
+	json;version='[20160212.0.0,20160212.0.1)',\
+	org.apache.commons.fileupload;version='[1.3.2,1.3.3)',\
+	org.apache.commons.io;version='[2.5.0,2.5.1)',\
+	org.apache.felix.configadmin;version='[1.8.8,1.8.9)',\
+	org.apache.felix.http.jetty;version='[3.2.0,3.2.1)',\
+	org.apache.felix.http.servlet-api;version='[1.1.2,1.1.3)',\
+	org.apache.felix.scr;version='[2.0.2,2.0.3)',\
+	org.apache.felix.webconsole;version='[4.2.16,4.2.17)',\
+	org.eclipse.equinox.event;version='[1.3.100,1.3.101)',\
+	org.eclipse.equinox.metatype;version='[1.4.100,1.4.101)',\
+	org.osgi.service.event;version='[1.3.1,1.3.2)',\
+	org.osgi.service.metatype;version='[1.3.0,1.3.1)',\
+	osgi.enroute.bostock.d3.webresource;version='[3.5.6,3.5.7)',\
+	osgi.enroute.executor.simple.provider;version='[2.1.0,2.1.1)',\
+	osgi.enroute.logger.simple.provider;version='[2.1.0,2.1.1)',\
+	osgi.enroute.web.simple.provider;version='[2.1.0,2.1.1)',\
+	osgi.enroute.webconsole.xray.provider;version='[2.1.0,2.1.1)'
+
+-runrequires: \
+	osgi.identity;filter:='(osgi.identity=osgi.enroute.dom4j.adapter)',\
+	osgi.identity;filter:='(osgi.identity=osgi.enroute.webconsole.xray.provider)'

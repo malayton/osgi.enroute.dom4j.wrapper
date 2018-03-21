@@ -1,0 +1,13 @@
+#
+# osgi.enroute.dom4j.adapter DEBUG LAUNCH SPECFICATION 
+#
+
+-include: ~osgi.enroute.dom4j.adapter.bndrun
+
+-runrequires.debug:  \
+	${debug-bundles}
+
+-runtrace: true
+
+-runbundles: \
+	${error;Resolve first}
